@@ -19,29 +19,35 @@ const receiver = {
   private_key: "APrivateKey1zkpC2CbihCvUyg8zcNXTngzGpmCzKTF8uZP4jfyu3LdfT8v",
 };
 
-const privateKey = sender.private_key;
-const received = receiver.address;
-const account = new Account({ privateKey });
-const rpc = "";
-const networkClient = new AleoNetworkClient(rpc);
+async function transfer() {
+  const privateKey = sender.private_key;
+  const received = receiver.address;
+  const account = new Account({ privateKey });  // 创建账户
+  const rpc = "";
 
-const keyProvider = new AleoKeyProvider();
-keyProvider.cacheOption = true;
+  /// 节点
+  const networkClient = new AleoNetworkClient(rpc); 
 
-const recordProvider = new NetworkRecordProvider(account, networkClient);
-const programManager = new ProgramManager(rpc, keyProvider, recordProvider);
-programManager.setAccount(account);
+  /// 零知识证明相关
+  const keyProvider = new AleoKeyProvider();
+  keyProvider.cacheOption = true;  
 
-class AleoProgram {
-  async transfer() {
-    networkClient.setAccount(account);
-    const tx_id = await programManager.transfer(
-      1,
-      received,
-      "transfer_private",
-      0.1
-    );
-    return tx_id;
-  }
+  /// 提供utxo
+  const recordProvider = new NetworkRecordProvider(account, networkClient);
+
+  /// 程序管理
+  const programManager = new ProgramManager(rpc, keyProvider, recordProvider);
+  programManager.setAccount(account);
+  networkClient.setAccount(account);
+
+  /// 发送交易
+  const tx_id = await programManager.transfer(
+    1,
+    received,
+    "transfer_private",
+    0.1
+  );
+  return tx_id;
 }
-export default new AleoProgram();
+
+transfer();
