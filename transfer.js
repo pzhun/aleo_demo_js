@@ -22,15 +22,17 @@ const receiver = {
 async function transfer() {
   const privateKey = sender.private_key;
   const received = receiver.address;
-  const account = new Account({ privateKey });  // 创建账户
   const rpc = "";
 
+  /// 创建账户
+  const account = new Account({ privateKey });
+
   /// 节点
-  const networkClient = new AleoNetworkClient(rpc); 
+  const networkClient = new AleoNetworkClient(rpc);
 
   /// 零知识证明相关
   const keyProvider = new AleoKeyProvider();
-  keyProvider.cacheOption = true;  
+  keyProvider.cacheOption = true;
 
   /// 提供utxo
   const recordProvider = new NetworkRecordProvider(account, networkClient);
