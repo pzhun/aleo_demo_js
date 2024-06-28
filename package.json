@@ -7,7 +7,6 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "@aleohq/sdk": "^0.6.0",
     "ffi-napi": "^4.0.3"
   }
 }
