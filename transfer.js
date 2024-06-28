@@ -19,10 +19,11 @@ const receiver = {
   private_key: "APrivateKey1zkpC2CbihCvUyg8zcNXTngzGpmCzKTF8uZP4jfyu3LdfT8v",
 };
 
+// curl 23.20.9.85:3030/testnet/latest/height
 async function transfer() {
   const privateKey = sender.private_key;
   const received = receiver.address;
-  const rpc = "";
+  const rpc = "http://23.20.9.85:3030";
 
   /// 创建账户
   const account = new Account({ privateKey });
@@ -42,14 +43,25 @@ async function transfer() {
   programManager.setAccount(account);
   networkClient.setAccount(account);
 
-  /// 发送交易
-  const tx_id = await programManager.transfer(
-    1,
-    received,
-    "transfer_private",
-    0.1
-  );
-  return tx_id;
+  const address = account.address().to_string();
+  
+  console.log(await networkClient.getLatestBlock());
+  // console.log(
+  //   await networkClient.getProgramMappingValue(
+  //     "credits.aleo",
+  //     "account",
+  //     address
+  //   )
+  // );
+
+  // /// 发送交易
+  // const tx_id = await programManager.transfer(
+  //   1,
+  //   received,
+  //   "transfer_private",
+  //   0.1
+  // );
+  // return tx_id;
 }
 
 transfer();
