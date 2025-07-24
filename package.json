@@ -7,7 +7,6 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "ffi-napi": "^4.0.3",
     "ws": "^8.17.1"
   }
 }
